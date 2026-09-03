@@ -14,6 +14,6 @@ export async function POST(request) {
         if (error instanceof HttpError) return NextResponse.json({ error: error.message }, { status: error.status });
 
         console.error(error);
-        return NextResponse.json({ error: "Une erreur interne s'est produite" });
+        return NextResponse.json({ error: "Une erreur interne s'est produite" }, { status: 500 });
     }
 }
