@@ -1,0 +1,12 @@
+services:
+  my-notes:
+    build: .
+    container_name: my-notes
+    ports:
+      - "7576:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./files:/app/files
+    restart: unless-stopped
