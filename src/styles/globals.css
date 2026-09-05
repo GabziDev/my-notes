@@ -63,7 +63,9 @@ button:hover {
 }
 
 button.ghost {
-  background-color: #eeeeee30;
+  background-color: var(--bg-surface);
+  color: var(--color);
+  border: transparent;
 }
 
 p,

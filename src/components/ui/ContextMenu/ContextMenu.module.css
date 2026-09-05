@@ -1,0 +1,32 @@
+.contextMenu {
+    position: fixed;
+    z-index: 1000;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color-muted);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    min-width: 160px;
+    list-style: none;
+    margin: 0;
+}
+
+.contextMenuItem {
+    color: var(--color-muted);
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 6px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.contextMenuItem :global(.bi) {
+    margin-right: 10px;
+}
+
+.contextMenuItem:hover {
+    background-color: var(--bg-surface);
+    color: var(--color);
+}

@@ -1,23 +1,30 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react";
 import "@/styles/pages/dashboard.css"
+import { useCallback, useEffect, useState } from "react";
+import { ContextMenuProvider } from "@/context/ContextMenuContext";
 import FileEditor from "@/components/ui/FileEditor/FileEditor";
 import FileTree from "@/components/ui/FileTree/FileTree";
 import LogoutBtn from "@/components/ui/LogoutBtn/LogoutBtn";
+import FileCreation from "@/components/ui/FileCreation/FileCreation";
 
 export default function Page() {
     const [tree, setTree] = useState(null);
     const [selectedPath, setSelectedPath] = useState(null);
     const [value, setValue] = useState("");
     const [status, setStatus] = useState(""); // loading, saving saved ou error
+    const [createTarget, setCreateTarget] = useState(null); // modal box
 
-    useEffect(() => {
+    const fetchTree = useCallback(() => {
         fetch("/api/files")
             .then((res) => res.json())
             .then(setTree)
             .catch(() => setStatus("error"));
     }, []);
+
+    useEffect(() => {
+        fetchTree();
+    }, [fetchTree]);
 
     async function handleSelectFile(filePath) {
         setSelectedPath(filePath);
@@ -76,20 +83,24 @@ export default function Page() {
             <div className="aside">
                 <div className="head">
                     <h3>Notes</h3>
-                    <button><i className="bi bi-plus"></i></button>
+                    <button onClick={() => setCreateTarget("")}><i className="bi bi-plus"></i></button>
                 </div>
                 <h6>Content</h6>
                 {tree && (
-                    <div className="arbo">
-                        {tree.children.map((child) => (
-                            <FileTree
-                                key={child.path}
-                                node={child}
-                                onSelectFile={handleSelectFile}
-                                selectedPath={selectedPath}
-                            />
-                        ))}
-                    </div>
+                    <ContextMenuProvider>
+                        <div className="arbo">
+                            {tree.children.map((child) => (
+                                <FileTree
+                                    key={child.path}
+                                    node={child}
+                                    onSelectFile={handleSelectFile}
+                                    selectedPath={selectedPath}
+                                    onRefresh={fetchTree}
+                                    onOpenCreate={setCreateTarget}
+                                />
+                            ))}
+                        </div>
+                    </ContextMenuProvider>
                 )}
 
                 <div className="bot">
@@ -115,6 +126,14 @@ export default function Page() {
                     </>
                 )}
             </div>
+
+            {createTarget !== null && (
+                <FileCreation
+                    targetPath={createTarget}
+                    onClose={() => setCreateTarget(null)}
+                    onCreated={fetchTree}
+                />
+            )}
         </div>
     );
 }
