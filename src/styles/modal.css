@@ -1,0 +1,58 @@
+.modal {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  backdrop-filter: blur(2);
+}
+
+.modal .box {
+  margin-top: 10%;
+  background-color: var(--bg-primary);
+  border-radius: 10px;
+  border: 1px solid var(--border-color-muted);
+  width: 500px;
+  height: max-content;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal .box .head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal .box .form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal .box .form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal .box .form input {
+  width: 100%;
+}
+
+.modal .box .form .error {
+  color: var(--color-error)
+}
+
+.modal .box .form .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal .box .actions button {
+  min-width: 100px;
+}

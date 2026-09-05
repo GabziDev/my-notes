@@ -24,7 +24,7 @@ async function createFile(path) {
     await fetch(`/api/files/${path}`, { method: "POST" });
 }
 
-export default function FileTree({ node, onSelectFile, selectedPath, onRefresh, onOpenCreate }) {
+export default function FileTree({ node, onSelectFile, selectedPath, onRefresh, onOpenCreate, onOpenDelete }) {
     const {showMenu} = useContextMenu();
 
     if (node.type === "file") {
@@ -38,10 +38,7 @@ export default function FileTree({ node, onSelectFile, selectedPath, onRefresh, 
                     onContextMenu={(e) =>
                         showMenu(e, [
                             {
-                                bootstrapIcon: "bi bi-trash3", label: "Supprimer le fichier", onClick: async () => {
-                                    await deletePath(node.path);
-                                    onRefresh();
-                                }
+                                bootstrapIcon: "bi bi-trash3", label: "Supprimer le fichier", onClick: async () => onOpenDelete(node.path),
                             },
                         ])
                     }
@@ -56,11 +53,11 @@ export default function FileTree({ node, onSelectFile, selectedPath, onRefresh, 
         );
     }
 
-    return <FolderNode node={node} onSelectFile={onSelectFile} selectedPath={selectedPath} onRefresh={onRefresh} onOpenCreate={onOpenCreate} />;
+    return <FolderNode node={node} onSelectFile={onSelectFile} selectedPath={selectedPath} onRefresh={onRefresh} onOpenCreate={onOpenCreate} onOpenDelete={onOpenDelete} />;
 }
 
 
-function FolderNode({ node, onSelectFile, selectedPath, onRefresh, onOpenCreate }) {
+function FolderNode({ node, onSelectFile, selectedPath, onRefresh, onOpenCreate, onOpenDelete }) {
     const [open, setOpen] = useState(false);
     const { showMenu } = useContextMenu();
 
@@ -72,15 +69,10 @@ function FolderNode({ node, onSelectFile, selectedPath, onRefresh, onOpenCreate 
                 onContextMenu={(e) =>
                     showMenu(e, [
                         {
-                            bootstrapIcon: "bi bi-trash3", label: "Supprimer le dossier", onClick: async () => {
-                                await deletePath(node.path)
-                                onRefresh();
-                            }
+                            bootstrapIcon: "bi bi-plus-square", label: "Créer ici", onClick: async () => onOpenCreate(node.path)
                         },
                         {
-                            bootstrapIcon: "bi bi-plus-square", label: "Créer ici", onClick: async () => {
-                                onOpenCreate(node.path);
-                            }
+                            bootstrapIcon: "bi bi-trash3", label: "Supprimer le dossier", onClick: async () => onOpenDelete(node.path)
                         }
                     ])
                 }
@@ -104,6 +96,7 @@ function FolderNode({ node, onSelectFile, selectedPath, onRefresh, onOpenCreate 
                             selectedPath={selectedPath}
                             onRefresh={onRefresh}
                             onOpenCreate={onOpenCreate}
+                            onOpenDelete={onOpenDelete}
                         />
                     ))}
                 </ul>

@@ -7,6 +7,7 @@ import FileEditor from "@/components/ui/FileEditor/FileEditor";
 import FileTree from "@/components/ui/FileTree/FileTree";
 import LogoutBtn from "@/components/ui/LogoutBtn/LogoutBtn";
 import FileCreation from "@/components/ui/FileCreation/FileCreation";
+import PathDeletion from "@/components/ui/PathDeletion/PathDeletion";
 
 export default function Page() {
     const [tree, setTree] = useState(null);
@@ -14,6 +15,7 @@ export default function Page() {
     const [value, setValue] = useState("");
     const [status, setStatus] = useState(""); // loading, saving saved ou error
     const [createTarget, setCreateTarget] = useState(null); // modal box
+    const [deleteTarget, setDeleteTarget] = useState(null);
 
     const fetchTree = useCallback(() => {
         fetch("/api/files")
@@ -97,6 +99,7 @@ export default function Page() {
                                     selectedPath={selectedPath}
                                     onRefresh={fetchTree}
                                     onOpenCreate={setCreateTarget}
+                                    onOpenDelete={setDeleteTarget}
                                 />
                             ))}
                         </div>
@@ -132,6 +135,14 @@ export default function Page() {
                     targetPath={createTarget}
                     onClose={() => setCreateTarget(null)}
                     onCreated={fetchTree}
+                />
+            )}
+
+            {deleteTarget !== null && (
+                <PathDeletion
+                    targetPath={deleteTarget}
+                    onClose={() => setDeleteTarget(null)}
+                    onDeleted={fetchTree}
                 />
             )}
         </div>
