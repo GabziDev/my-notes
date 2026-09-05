@@ -1,0 +1,87 @@
+.editor {
+    flex: 1;
+    min-height: 0;
+    background-color: var(--bg-primary) !important;
+}
+
+.editor:global(.w-md-editor) {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.editor :global(.w-md-editor-content) {
+    border: none !important;
+}
+
+.editor :global(.w-md-editor-toolbar) {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border-color-muted) !important;
+    min-height: 40px;
+    padding: 0 5px !important;
+}
+
+.editor :global(.w-md-editor-toolbar svg) {
+    height: 100%;
+    width: auto;
+}
+
+.editor :global(.w-md-editor-toolbar li > button) {
+    min-height: 26px;
+    min-width: 26px;
+    color: var(--color-muted) !important;
+    border-radius: 5px !important;
+    transition: var(--transition) !important;
+}
+
+.editor :global(.w-md-editor-toolbar li > button:hover) {
+    background-color: var(--bg-surface) !important;
+    color: var(--color) !important;
+}
+
+.editor :global(.w-md-editor-toolbar li.active > button) {
+    background-color: var(--bg-surface) !important;
+    color: var(--color-info) !important;
+}
+
+.editor :global(.w-md-editor-toolbar-divider) {
+    visibility: hidden;
+}
+
+.editor :global(.w-md-editor-text) {
+    padding: 18px 20px !important;
+    color: var(--color) !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    caret-color: var(--color) !important;
+}
+
+.editor :global(.w-md-editor-bar) {
+    visibility: hidden;
+}
+
+/*Preview*/
+.editor :global(.w-md-editor-preview) {
+    box-shadow: inset 1px 0 0 0 var(--border-color-muted) !important;
+    padding: 18px 20px !important;
+}
+
+.editor :global(.wmde-markdown) {
+    background-color: transparent !important;
+    font-family: var(--font-inter), sans-serif;
+}
+
+.editor :global(.wmde-markdown code) {
+    color: var(--color-muted) !important;
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color-muted);
+    border-radius: 10px;
+}
+
+.editor :global(.wmde-markdown blockquote) {
+    border-left-color: var(--border-color-muted) !important;
+}
+
+.editor :global(.wmde-markdown img) {
+    border-radius: 10px;
+}

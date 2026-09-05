@@ -1,11 +1,13 @@
 :root {
-  --bg-primary: #252531;
-  --bg-secondary: #1c1c27;
+  --bg-primary: #1c1c1c;
+  --bg-secondary: #121212;
+
+  --bg-surface: #2e2e2e;
 
   --color: #eaecec;
-  --color-muted: #93949d;
+  --color-muted: #7e7e7e;
 
-  --border-color-muted: #eaecec50;
+  --border-color-muted: #eaecec30;
   --border-color: #eaecec90;
 
   --transition: 120ms ease all;
@@ -30,7 +32,7 @@ body {
 }
 
 input {
-  background-color: #2e2f3a;
+  background-color: var(--bg-surface);
   padding: 0 10px;
   border-radius: 10px;
   border: 1px solid var(--border-color-muted);
@@ -50,6 +52,7 @@ button {
   background-color: #eeeeee;
   color: black;
   border-radius: 10px;
+  padding: 0 10px;
   border: 1px solid var(--border-color-muted);
   cursor: pointer;
   transition: var(--transition)
@@ -59,9 +62,12 @@ button:hover {
   opacity: .7;
 }
 
+button.ghost {
+  background-color: #eeeeee30;
+}
+
 p,
-a,
-button {
+a {
   font-size: 16px;
 }
 
@@ -80,6 +86,7 @@ h6 {
   font-weight: 300;
 }
 
+button,
 label {
   font-size: 14px;
 }

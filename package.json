@@ -2,6 +2,7 @@
   "name": "my-notes",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,8 +13,10 @@
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "@uiw/react-md-editor": "^4.1.2",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^13.0.3",
+    "bootstrap-icons": "^1.13.1",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8"

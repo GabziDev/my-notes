@@ -1,0 +1,14 @@
+.logout {
+    background-color: transparent;
+    color: var(--color-muted);
+    border: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.logout:hover {
+    color: var(--color-error);
+    background-color: var(--bg-surface);
+}

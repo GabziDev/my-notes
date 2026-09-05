@@ -1,3 +1,103 @@
 body {
   background-color: var(--bg-secondary);
 }
+
+.dashboard {
+  height: 100vh;
+  display: flex;
+}
+
+.dashboard .aside {
+  width: 300px;
+  background-color: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aside .head {
+  padding: 0 10px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aside h6 {
+  padding: 0 10px;
+}
+
+.aside .arbo {
+  flex: 1;
+  min-height: 0;
+  padding: 0 2px;
+  overflow-y: auto;
+}
+
+.aside .head button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  color: var(--color-muted);
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+}
+
+.aside .head button:hover {
+  background-color: #eeeeee30;
+  color: var(--color)
+}
+
+.aside .bot {
+  height: 60px;
+  border-top: 1px solid var(--border-color-muted);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.aside .bot button {
+  width: 100%;
+}
+
+.dashboard .file {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border-color-muted);
+}
+
+.file .toolbar {
+  height: 50px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: center;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color-muted);
+}
+
+.toolbar .file-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.file-info i,
+.file-info span:nth-last-child(1) {
+  color: var(--color-muted)
+}
+
+.status-ok {
+  color: var(--color-success)
+}
+
+.status-error {
+  color: var(--color-error)
+}

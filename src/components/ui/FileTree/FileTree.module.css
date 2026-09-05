@@ -1,0 +1,78 @@
+.node {
+    all: unset;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 8px;
+    color: var(--color);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.node:hover {
+    background-color: var(--bg-surface);
+}
+
+.node.selected {
+    background-color: var(--bg-surface);
+    color: var(--color);
+}
+
+.node.selected .icon {
+    color: var(--color-info);
+}
+
+.iconSlot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--color-muted);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-muted);
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.arrow {
+    transition: transform 150ms ease;
+    transform: rotate(0deg);
+}
+
+.arrowOpen {
+    transform: rotate(90deg);
+}
+
+.folderNode>.node .icon {
+    color: var(--color-info);
+}
+
+.fileNode,
+.folderNode {
+    list-style: none;
+}
+
+.children {
+    list-style: none;
+    padding-left: 13px;
+    border-left: 1px solid var(--border-color-muted);
+    margin-left: 15px;
+}
