@@ -176,7 +176,7 @@ export async function login(username, password) {
 
     cookieStore.set("sessionToken", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.HTTPS === "true",
         sameSite: "lax",
         expires: expiresAt,
         path: "/",
