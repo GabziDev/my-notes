@@ -10,7 +10,7 @@ const ALLOWED_EXTENSION = ".md";
 /**
  * Valide et resolve un chemin relatif ("docs/readme.md" ou [¨docs", "readme.md"])
  * 
- * Bloque les sortie de ROOT_DIR et toutes extension qui ne sont pas inclus dans ALLOWED_EXTENSION
+ * Bloque les sortie de ROOT_DIR
  * 
  * @param {*} relativepathOrSegments 
  * @returns 
@@ -19,12 +19,14 @@ function resolveSafePath(relativepathOrSegments) {
     const relativePath = Array.isArray(relativepathOrSegments) ? relativepathOrSegments.join("/") : relativepathOrSegments;
 
     const cleaned = String(relativePath).replace(/\0/g, ""); // anti null byte inject
+
+    if (cleaned.includes("\\") || /^[a-zA-Z]:/.test(cleaned)) 
+        throw new Error("caractères de chemin non autorisé")
+
     const resolved = path.resolve(ROOT_DIR, cleaned);
 
     const isInsideRoot = resolved === ROOT_DIR || resolved.startsWith(ROOT_DIR + path.sep);
-
     if (!isInsideRoot) throw new Error("en dehors du dossier /files");
-    if (path.extname(resolved).toLowerCase() !== ALLOWED_EXTENSION) throw new Error("seulement les fichiers dans ALLOWED_EXTENSION sont autorisé");
 
     return resolved;
 }
@@ -103,38 +105,112 @@ export async function getFileTree() {
 }
 
 /**
- * Lit le contenu d'un fichier .md dans /files
+ * Lit le contenu d'un fichier .md ou envoie les infos d'un dossier
  * 
  * @param {*} relativepathOrSegments 
  * @returns 
  */
-export async function readFileContent(relativepathOrSegments) {
+export async function readPath(relativepathOrSegments) {
     const targetPath = resolveSafePath(relativepathOrSegments);
     const relativePath = path.relative(ROOT_DIR, targetPath).split(path.sep).join("/");
 
-    const content = await fs.readFile(targetPath, "utf-8");
+    let stats;
+    try {
+        stats = await fs.stat(targetPath);
+    } catch {
+        throw new HttpError(404, "chemin introuvable");
+    }
 
-    return { path: relativePath, content }
+    if (stats.isDirectory())
+        return { path: relativePath, type: "folder" };
+
+    if (stats.isFile()) {
+        if (path.extname(targetPath).toLowerCase() !== ALLOWED_EXTENSION) throw new HttpError(400, "seulement les fichiers .md sont autorisés");
+
+        const content = await fs.readFile(targetPath, "utf-8");
+        return { path: relativePath, type: "file", content }
+    }
+
+    throw new HttpError(400, "type de chemin non supporté");
 }
 
 /**
- * save (ecrase ou créer) un fichier .md dans /files
- * (Le dernier qui save gagne)
+ * Suppression dun fichier ou d'un dossier
+ * 
+ * @param {*} relativepathOrSegments 
+ * @returns 
+ */
+export async function deletePath(relativepathOrSegments) {
+    const targetPath = resolveSafePath(relativepathOrSegments);
+    const realtivePath = path.relative(ROOT_DIR, targetPath).split(path.sep).join("/");
+
+    let stats;
+    try {
+        stats = await fs.stat(targetPath);
+    } catch {
+        throw new HttpError(404, "chemin introuvable");
+    }
+
+    if (stats.isDirectory()) {
+        await fs.rm(targetPath, { recursive: true, force: true });
+        return { path: realtivePath, message: "Dossier supprimer" };
+    }
+
+    if (stats.isFile()) {
+        await fs.unlink(targetPath);
+        return { path: realtivePath, message: "Fichier supprimer" };
+    }
+
+    throw new HttpError(400, "type de chemin non supporté");
+}
+
+/**
+ * Modifier le contenu d'un fichier
  * 
  * @param {*} relativepathOrSegments 
  * @param {*} content 
- * @returns 
  */
-export async function saveFileContent(relativepathOrSegments, content) {
+export async function editFileContent(relativepathOrSegments, content) {
     if (typeof content !== "string") throw new HttpError(400, "le content à sauvegarder doit etre une chaine de caractères");
 
     const targetPath = resolveSafePath(relativepathOrSegments);
+
+    if (path.extname(targetPath).toLowerCase() !== ALLOWED_EXTENSION)
+        throw new HttpError(400, "seulement les fichiers .md sont autorisés");
+
+    try {
+        await fs.access(targetPath);
+    } catch {
+        throw new HttpError(404, "fichier introuvable");
+    }
+
+    await fs.writeFile(targetPath, content, "utf-8");
+}
+
+/**
+ * Créer un fichier
+ * 
+ * @param {*} relativepathOrSegments 
+ * @returns 
+ */
+export async function createFile(relativepathOrSegments) {
+    const targetPath = resolveSafePath(relativepathOrSegments);
+
+    if (path.extname(targetPath).toLowerCase() !== ALLOWED_EXTENSION)
+        throw new HttpError(400, "seulement les fichiers .md sont autorisés");
+
     const relativePath = path.relative(ROOT_DIR, targetPath).split(path.sep).join("/");
+    const fileName = path.basename(targetPath, ALLOWED_EXTENSION);
+
+    const alreadyExists = await fs.access(targetPath).then(() => true).catch(() => false);
+    if (alreadyExists)
+        throw new HttpError(409, "un fichier avec ce nom existe déjà");
 
     await fs.mkdir(path.dirname(targetPath), { recursive: true });
-    await fs.writeFile(targetPath, content, "utf-8");
+    await fs.writeFile(targetPath, `# ${fileName}`, "utf-8");
 
     return { path: relativePath }
+
 }
 
 export { ROOT_DIR }

@@ -43,7 +43,7 @@ export default function Page() {
 
         try {
             const res = await fetch(`/api/files/${selectedPath}`, {
-                method: "POST",
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ content: value }),
             });
