@@ -7,6 +7,18 @@ import { HttpError } from "@/lib/errors";
 const ROOT_DIR = path.resolve(process.cwd(), "files");
 const ALLOWED_EXTENSION = ".md";
 
+const MAX_FILE_SIZE = 1000000;
+const MAX_FOLDER_LEVELS = 6;
+const MAX_NAME_LENGTH = 100;
+const MAX_PATH_LENGTH = 400;
+
+// commence par lettre chiffre ou _ puis lettres chiffres espace et _ . () ' -
+const NAME_PATTERN = /^[\p{L}\p{N}_][\p{L}\p{N} _.()'’-]*$/u;
+
+function isValidName(name) {
+    return name.length <= MAX_NAME_LENGTH && NAME_PATTERN.test(name);
+}
+
 /**
  * Valide et resolve un chemin relatif ("docs/readme.md" ou [¨docs", "readme.md"])
  * 
@@ -20,9 +32,20 @@ function resolveSafePath(relativepathOrSegments) {
 
     const cleaned = String(relativePath).replace(/\0/g, ""); // anti null byte inject
 
+    if (cleaned.length > MAX_PATH_LENGTH)
+        throw new HttpError(400, "chemin trop long");
+
     if (cleaned.includes("\\") || /^[a-zA-Z]:/.test(cleaned)) 
         throw new Error("caractères de chemin non autorisé")
 
+    const segments = cleaned.split("/").filter((s) => s !== "" && s !== ".");
+
+    if (segments.length > MAX_FOLDER_LEVELS)
+        throw new HttpError(400, "chemin trop deep");
+
+    if (!segments.every(isValidName))
+        throw new HttpError(400, "nom de fichier ou de dossier invalide");
+        
     const resolved = path.resolve(ROOT_DIR, cleaned);
 
     const isInsideRoot = resolved === ROOT_DIR || resolved.startsWith(ROOT_DIR + path.sep);
@@ -127,6 +150,8 @@ export async function readPath(relativepathOrSegments) {
     if (stats.isFile()) {
         if (path.extname(targetPath).toLowerCase() !== ALLOWED_EXTENSION) throw new HttpError(400, "seulement les fichiers .md sont autorisés");
 
+        //if (stats.size > MAX_FILE_SIZE) throw new HttpError(413, "fichier trop volumineux");
+
         const content = await fs.readFile(targetPath, "utf-8");
         return { path: relativePath, type: "file", content }
     }
@@ -172,6 +197,8 @@ export async function deletePath(relativepathOrSegments) {
  */
 export async function editFileContent(relativepathOrSegments, content) {
     if (typeof content !== "string") throw new HttpError(400, "le content à sauvegarder doit etre une chaine de caractères");
+
+    if (Buffer.byteLength(content, "utf-8") > MAX_FILE_SIZE) throw new HttpError(413, "fichier trop gros");
 
     const targetPath = resolveSafePath(relativepathOrSegments);
 
