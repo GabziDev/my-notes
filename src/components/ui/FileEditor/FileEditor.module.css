@@ -21,31 +21,43 @@
     padding: 0 5px !important;
 }
 
+.editor :global(.w-md-editor-toolbar ul) {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
 .editor :global(.w-md-editor-toolbar svg) {
-    height: 100%;
-    width: auto;
+    width: 16px;
+    height: 16px;
 }
 
 .editor :global(.w-md-editor-toolbar li > button) {
-    min-height: 26px;
-    min-width: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    min-width: 28px;
+    margin: 0;
+    padding: 0 6px;
     color: var(--color-muted) !important;
-    border-radius: 5px !important;
-    transition: var(--transition) !important;
+    border-radius: 6px !important;
 }
 
 .editor :global(.w-md-editor-toolbar li > button:hover) {
-    background-color: var(--bg-surface) !important;
+    background-color: var(--bg-hover) !important;
     color: var(--color) !important;
 }
 
 .editor :global(.w-md-editor-toolbar li.active > button) {
-    background-color: var(--bg-surface) !important;
-    color: var(--color-info) !important;
+    background-color: var(--bg-active) !important;
+    color: var(--accent) !important;
 }
 
 .editor :global(.w-md-editor-toolbar-divider) {
-    visibility: hidden;
+    height: 16px !important;
+    margin: 0 6px !important;
+    background-color: var(--border-color-muted) !important;
 }
 
 .editor :global(.w-md-editor-text) {
@@ -81,11 +93,11 @@
 .editor :global(.wmde-markdown blockquote) {
     border-left-color: var(--border-color-muted) !important;
 }
-
+ 
 .editor :global(.wmde-markdown img) {
     border-radius: 10px;
 }
-
+ 
 .editor :global(.w-md-editor-text-input),
 .editor :global(.w-md-editor-text-pre),
 .editor :global(.w-md-editor-text-pre > code) {

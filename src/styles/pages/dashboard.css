@@ -8,11 +8,12 @@ body {
 }
 
 .dashboard .aside {
-  width: 300px;
+  width: 280px;
+  flex-shrink: 0;
   background-color: var(--bg-secondary);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .aside .head {
@@ -30,7 +31,7 @@ body {
 .aside .arbo {
   flex: 1;
   min-height: 0;
-  padding: 0 2px;
+  padding: 0 8px;
   overflow-y: auto;
 }
 
@@ -38,36 +39,48 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 30px;
+  height: 28px;
+  width: 28px;
+  padding: 0;
   color: var(--color-muted);
   background-color: transparent;
   border: none;
-  font-size: 20px;
+  border-radius: var(--radius);
+  font-size: 18px;
 }
 
 .aside .head button:hover {
-  background-color: #eeeeee30;
-  color: var(--color)
+  background-color: var(--bg-hover);
+  color: var(--color);
 }
 
 .aside .bot {
-  height: 60px;
+  height: 56px;
   border-top: 1px solid var(--border-color-muted);
-  padding: 0 10px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
 }
 
 .aside .bot button {
   width: 100%;
+  background-color: transparent;
+  color: var(--color-muted);
+  text-align: left;
+}
+
+.aside .bot button:hover {
+  background-color: var(--bg-hover);
+  color: var(--color);
 }
 
 .dashboard .file {
   height: 100%;
   width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-primary);
   border-left: 1px solid var(--border-color-muted);
 }
 
@@ -86,7 +99,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .file-info i,

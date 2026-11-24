@@ -1,32 +1,62 @@
 .contextMenu {
     position: fixed;
     z-index: 1000;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color-muted);
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    background-color: rgba(44, 44, 46, 0.8);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-menu);
     padding: 5px;
-    min-width: 160px;
+    min-width: 200px;
     list-style: none;
     margin: 0;
 }
 
 .contextMenuItem {
-    color: var(--color-muted);
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    color: var(--color);
+    font-size: 13px;
+    font-weight: 400;
     text-align: left;
-    padding: 6px 12px;
     background: none;
     border: none;
+    border-radius: var(--radius-sm);
     cursor: pointer;
 }
 
 .contextMenuItem :global(.bi) {
     margin-right: 10px;
+    font-size: 14px;
+    color: var(--color-muted);
 }
 
 .contextMenuItem:hover {
-    background-color: var(--bg-surface);
-    color: var(--color);
+    background-color: var(--accent);
+    color: #fff;
+    opacity: 1;
+}
+
+.contextMenuItem:hover :global(.bi) {
+    color: #fff;
+}
+ 
+.contextMenu li:last-child .contextMenuItem {
+    color: var(--color-error);
+}
+ 
+.contextMenu li:last-child .contextMenuItem :global(.bi) {
+    color: var(--color-error);
+}
+ 
+.contextMenu li:last-child .contextMenuItem:hover {
+    background-color: var(--color-error);
+    color: #fff;
+}
+ 
+.contextMenu li:last-child .contextMenuItem:hover :global(.bi) {
+    color: #fff;
 }
